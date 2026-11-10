@@ -14,7 +14,7 @@ int main(void)
     t_arbre a;
 
     // lecture de l'arbre décrit dans un fichier texte
-    a = readTree("data/exemple1.txt");
+    a = readTree("data/arbre_grand.txt");
 
     // affichage console de tous ses rameaux
     displayTree(a);
