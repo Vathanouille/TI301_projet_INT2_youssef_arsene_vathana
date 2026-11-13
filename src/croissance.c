@@ -45,29 +45,27 @@ int howManyBranches(float p1, float p2)
     {
         return 1;
     }
-    if (u < p1+p2 /100.0)
+    if (u < (p1+p2) /100.0)
     {
         return 2;
     }
-
     return 3;
 
 }
 
 void growBud(t_arbre *a, t_rameau *b, int n, int saison)
 {
-    b->p_fils = malloc(n * sizeof(t_rameau*));
-    b->nb_fils = n;
+    b->p_fils = malloc(n * sizeof(t_rameau *));
 
-    for (int i = 0; i < n-1; i++)
+    for (int i = 0; i < n; i++)
     {
         float direction;
-        float length;
+        float longueur;
 
         if (i == 0)
         {
             direction = b->dir + randomBetween(-10, 10);
-            length = randomBetween(0.7, 1.3);
+            longueur = randomBetween(0.7, 1.3);
         }
         else
         {
@@ -79,14 +77,44 @@ void growBud(t_arbre *a, t_rameau *b, int n, int saison)
             else
                 direction = b->dir + angle;
 
-            length = randomBetween(0.7, 1.3);
+            longueur = randomBetween(0.7, 1.3);
         }
-
         direction = clampDirection(direction);
+        b->p_fils[i] = growBranch(a, b, saison, direction, longueur);
+    }
+    b->nb_fils = n;
+    b->etat = BOIS;
+}
 
-        b->p_fils[i] = malloc(sizeof(t_rameau));
-        growBranch(a, b->p_fils[i], direction, length, saison);
+void growTree(t_arbre *a, int nbSaisons)
+{
+    t_queue F = createEmptyQueue();
+    enqueue(&F, a->pied);
+
+    for (int saison = 1; saison <= nbSaisons; saison++)
+    {
+        t_queue G = createEmptyQueue();
+
+        while (!isEmptyQueue(F))
+        {
+            t_rameau *b = dequeue(&F);
+
+            if (canGrow(95))
+            {
+                int n = howManyBranches(70, 25);
+                growBud(a, b, n, saison);
+
+                for (int i = 0; i < b->nb_fils; i++)
+                    enqueue(&G, b->p_fils[i]);
+            }
+            else
+            {
+                enqueue(&G, b);
+            }
+        }
+        F = G;
     }
 
-    b->etat = BOIS;
+    while (!isEmptyQueue(F))
+        dequeue(&F);
 }

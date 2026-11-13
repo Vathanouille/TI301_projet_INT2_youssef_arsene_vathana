@@ -15,7 +15,7 @@
 int main(void)
 {
     int compte[4] = {0, 0, 0, 0};
-    t_arbre a, b, c;
+    t_arbre a, b, c, d;
     t_queue q;
 
     // 1. howManyBranches : 1 000 000 de tirages (graine par défaut du générateur)
@@ -67,5 +67,8 @@ int main(void)
     drawSvg(c.pied, "output/etape2_moyen.svg");
     animateSvg(c.pied, "output/etape2_moyen_animation.svg", 0.6);
 
+    d = createTree(0, 1, 3);
+    growTree(&d, 15);
+    animateSvg(d.pied, "output/etape2_15_saisons.svg", 0.6);
     return 0;
 }
