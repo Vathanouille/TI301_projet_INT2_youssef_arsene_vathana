@@ -53,3 +53,17 @@ int canGrowInLight(double lumiere)
 }
 
 /* ---------------------------------------------------------------- à compléter : vos fonctions, à partir d'ici */
+
+int howManyBranchesInLight(double lumiere)
+{
+    if (lumiere >= 0.7) {
+        float p[] = {70, 25, 5};
+        return 1 + drawFromTable(p, 3);
+    }
+    if (lumiere >= 0.4) {
+        float p[] = {85, 15};
+        return 1 + drawFromTable(p, 2);
+    }
+    float p[] = {100};
+    return 1 + drawFromTable(p, 1);
+}

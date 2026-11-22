@@ -71,8 +71,20 @@ int main(void)
     freeBranches(g.arbres[0].step.arbre.pied);
     freeArrays(&g);
 
-    // À ÉCRIRE : deux ou trois autres cas construits à la main, dont un rameau d'altitude supérieure à HMAX
-    //    (il est compté dans la dernière rangée)
+    // Trois cas supplémentaires : colonne négative, dépassement de largeur et altitude élevée.
+    g = createForest(1, 10, 8, 0.5, 20000);
+    t_rameau *r1 = createBranch(-0.5f, 2.4f, 0, 1, 0, 0, 0);
+    t_rameau *r2 = createBranch(12.3f, 3.0f, 0, 1, 0, 0, 1);
+    t_rameau *r3 = createBranch(4.2f, 100.0f, 0, 1, 0, 0, 2);
+    addToGrid(&g, r1);
+    addToGrid(&g, r2);
+    addToGrid(&g, r3);
+    printf("cas manuels : cases (2,9)=%d, (3,2)=%d, (7,4)=%d (attendu : 1, 1, 1)\n",
+           g.occupation[2][9], g.occupation[3][2], g.occupation[7][4]);
+    freeBranches(r1);
+    freeBranches(r2);
+    freeBranches(r3);
+    freeArrays(&g);
 
     return 0;
 }

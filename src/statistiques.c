@@ -299,3 +299,40 @@ void histoToSVG(int effectifs[], int nb_classes, double min, double largeur, con
 }
 
 /* ---------------------------------------------------------------- à compléter : vos fonctions, à partir d'ici */
+
+/* Répartition des valeurs dans des intervalles réguliers. */
+int *computeHistogram(double v[], int n, int nb_classes, double *p_min, double *p_largeur)
+{
+    if (!v || n <= 0 || nb_classes <= 0 || !p_min || !p_largeur) return NULL;
+    double minimum = v[0], maximum = v[0];
+    for (int i = 1; i < n; ++i) {
+        if (v[i] < minimum) minimum = v[i];
+        if (v[i] > maximum) maximum = v[i];
+    }
+    *p_min = minimum;
+    *p_largeur = (maximum - minimum) / nb_classes;
+    int *effectifs = calloc((size_t)nb_classes, sizeof(*effectifs));
+    if (!effectifs) { perror("computeHistogram"); exit(EXIT_FAILURE); }
+    for (int i = 0; i < n; ++i) {
+        int classe = *p_largeur == 0 ? 0 : (int)floor((v[i] - minimum) / *p_largeur);
+        if (classe < 0) classe = 0;
+        if (classe >= nb_classes) classe = nb_classes - 1;
+        ++effectifs[classe];
+    }
+    return effectifs;
+}
+
+void displayHistogram(int effectifs[], int nb_classes, double min, double largeur)
+{
+    if (!effectifs || nb_classes <= 0) return;
+    int maximum = 0;
+    for (int i = 0; i < nb_classes; ++i)
+        if (effectifs[i] > maximum) maximum = effectifs[i];
+    for (int i = 0; i < nb_classes; ++i) {
+        int taille = maximum ? (int)round(50.0 * effectifs[i] / maximum) : 0;
+        printf("[ %8.3f ; %8.3f%c %6d ", min + i * largeur,
+               min + (i + 1) * largeur, i == nb_classes - 1 ? ']' : '[', effectifs[i]);
+        for (int j = 0; j < taille; ++j) putchar('#');
+        putchar('\n');
+    }
+}

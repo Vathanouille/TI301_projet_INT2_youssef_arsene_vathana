@@ -50,10 +50,36 @@ int main(void)
     }
     printf("attendu : identique pour les trois ; arbre_grand 5518 rameaux ; cime d'arbre_petit 4,130 (4,135 pour l'arbre lu)\n");
 
-    // 2. À ÉCRIRE : le test automatique de la validation de l'étape 3
-    //    pour 100 graines, 20 saisons, avec L = 1 puis L = 0,5 : après chaque saison, les mesures tenues à jour
-    //    sont exactement celles des fonctions récursives, la hauteur ne dépasse pas le numéro de la saison
-    //    et elle augmente d'au plus 1 ; affichez le nombre de problèmes trouvés (attendu : 0)
+    // 2. Test automatique sur 100 graines, 20 saisons et les deux lumières.
+    int problemes = 0;
+    for (int j = 0; j < 2; j++)
+    {
+        for (int graine = 1; graine <= 100; graine++)
+        {
+            a = createForestTree(0, 0, 1, graine);
+            int hauteur_precedente = 0;
+            for (int saison = 1; saison <= 20; saison++)
+            {
+                growSeason(&a, L[j]);
+                t_rameau *r = a.step.arbre.pied;
+                if (a.step.arbre.nb_rameaux != countBranches(r)
+                    || a.hauteur != computeHeight(r)
+                    || a.cime != computeTop(r)
+                    || a.xmin != computeXMin(r)
+                    || a.xmax != computeXMax(r)
+                    || a.nb_bourgeons != countBuds(r)
+                    || a.hauteur > saison
+                    || a.hauteur < hauteur_precedente
+                    || a.hauteur > hauteur_precedente + 1)
+                {
+                    problemes++;
+                }
+                hauteur_precedente = a.hauteur;
+            }
+            freeForestTree(&a);
+        }
+    }
+    printf("100 graines, 20 saisons, L=1 puis L=0.5 : %d probleme(s) (attendu : 0)\n", problemes);
 
     // 3. graine 1, 20 saisons
     for (int j = 0; j < 2; j++)
