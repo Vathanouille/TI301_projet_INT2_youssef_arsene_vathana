@@ -22,4 +22,7 @@ int canGrowInLight(double lumiere);
 
 /* ---------------------------------------------------------------- à compléter : vos prototypes, à partir d'ici */
 
+// nombre de nouveaux rameaux (1, 2 ou 3) d'un bourgeon qui pousse et recoit la lumiere lumiere
+int howManyBranchesInLight(double lumiere);
+
 #endif //FORET_CROISSANCE_LUMIERE_H
