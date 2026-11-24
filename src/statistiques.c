@@ -298,8 +298,6 @@ void histoToSVG(int effectifs[], int nb_classes, double min, double largeur, con
     }
 }
 
-/* ---------------------------------------------------------------- à compléter : vos fonctions, à partir d'ici */
-
 /* Répartition des valeurs dans des intervalles réguliers. */
 int *computeHistogram(double v[], int n, int nb_classes, double *p_min, double *p_largeur)
 {
